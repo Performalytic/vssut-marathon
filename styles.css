@@ -91,7 +91,7 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.home-page .logo {
+.logo {
     position: fixed;
     top: 1rem;
     left: 1rem;
@@ -100,25 +100,29 @@ body {
     padding: 0.5rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
+    flex-shrink: 0;
 }
 
-.home-page .logo img {
+.logo img {
     height: 50px;
     width: auto;
     transition: var(--transition);
 }
 
-.home-page .logo img:hover {
+.logo img:hover {
     transform: scale(1.05);
 }
 
 header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    padding: 1.5rem 1rem;
+    padding: 2rem 1rem;
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
 }
 
 header::before {
@@ -177,25 +181,30 @@ header::before {
 }
 
 .nav-link {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
     flex-shrink: 0;
 }
 
 .home-button {
     display: inline-block;
     padding: 0.5rem 1rem;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--primary-color);
     text-decoration: none;
     border-radius: var(--border-radius);
-    font-weight: 500;
+    font-weight: 600;
     transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: var(--shadow);
 }
 
 .home-button:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+    background: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 nav {
@@ -758,11 +767,11 @@ footer {
     }
 
     header h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 
     header h2 {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 
     nav a {
