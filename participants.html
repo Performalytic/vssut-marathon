@@ -27,15 +27,32 @@
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search participants by name or college...">
         </div>
+        <div class="filter-container">
+            <select id="collegeFilter">
+                <option value="">All Colleges</option>
+            </select>
+            <select id="typeFilter">
+                <option value="">All Types</option>
+                <option value="Student">Student</option>
+                <option value="Staff">Staff</option>
+            </select>
+            <select id="sortBy">
+                <option value="firstName">Sort by First Name</option>
+                <option value="lastName">Sort by Last Name</option>
+                <option value="college">Sort by College</option>
+                <option value="gradYear">Sort by Graduation Year</option>
+            </select>
+            <button id="sortOrderBtn">Ascending</button>
+        </div>
         <div class="table-container">
             <table id="participantsTable">
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>College</th>
-                        <th>Year of Graduation</th>
-                        <th>Student or Staff</th>
+                        <th data-sort="firstName" class="sortable">First Name <span class="sort-icon">↕</span></th>
+                        <th data-sort="lastName" class="sortable">Last Name <span class="sort-icon">↕</span></th>
+                        <th data-sort="college" class="sortable">College <span class="sort-icon">↕</span></th>
+                        <th data-sort="gradYear" class="sortable">Year of Graduation <span class="sort-icon">↕</span></th>
+                        <th data-sort="type" class="sortable">Student or Staff <span class="sort-icon">↕</span></th>
                     </tr>
                 </thead>
                 <tbody>

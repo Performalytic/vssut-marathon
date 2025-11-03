@@ -92,23 +92,51 @@ document.getElementById('registrationForm')?.addEventListener('submit', function
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// Function to load participants with search functionality
-async function loadParticipants(searchTerm = '') {
+// Global variables for filters and sorting
+let allParticipants = [];
+let sortOrder = 'asc';
+
+// Function to load participants with search, filter, and sorting functionality
+async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter = '', sortBy = 'firstName') {
     try {
         const response = await fetch('https://performalytic.github.io/vssut-marathon/participants.json');
         if (!response.ok) {
             throw new Error('Failed to load participants data');
         }
-        const participants = await response.json();
+        allParticipants = await response.json();
+
+        // Populate college filter options
+        populateCollegeFilter(allParticipants);
+
         const tbody = document.querySelector('#participantsTable tbody');
         tbody.innerHTML = '';
 
-        const filteredParticipants = participants.filter(participant =>
-            !searchTerm ||
-            participant.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            participant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            participant.college.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        let filteredParticipants = allParticipants.filter(participant => {
+            const matchesSearch = !searchTerm ||
+                participant.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                participant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                participant.college.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesCollege = !collegeFilter || participant.college === collegeFilter;
+            const matchesType = !typeFilter || participant.type === typeFilter;
+            return matchesSearch && matchesCollege && matchesType;
+        });
+
+        // Sort participants
+        filteredParticipants.sort((a, b) => {
+            let aVal = a[sortBy].toString().toLowerCase();
+            let bVal = b[sortBy].toString().toLowerCase();
+
+            if (sortBy === 'gradYear') {
+                aVal = parseInt(aVal);
+                bVal = parseInt(bVal);
+            }
+
+            if (sortOrder === 'asc') {
+                return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+            } else {
+                return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+            }
+        });
 
         if (filteredParticipants.length === 0) {
             const row = document.createElement('tr');
@@ -135,6 +163,20 @@ async function loadParticipants(searchTerm = '') {
     }
 }
 
+// Function to populate college filter options
+function populateCollegeFilter(participants) {
+    const collegeFilter = document.getElementById('collegeFilter');
+    if (!collegeFilter) return;
+    const colleges = [...new Set(participants.map(p => p.college))].sort();
+    collegeFilter.innerHTML = '<option value="">All Colleges</option>';
+    colleges.forEach(college => {
+        const option = document.createElement('option');
+        option.value = college;
+        option.textContent = college;
+        collegeFilter.appendChild(option);
+    });
+}
+
 // Function to show fee info based on college
 document.getElementById('college')?.addEventListener('change', function() {
     const feeInfo = document.getElementById('feeInfo');
@@ -149,12 +191,72 @@ document.getElementById('college')?.addEventListener('change', function() {
 
 // Search functionality for participants page
 document.getElementById('searchInput')?.addEventListener('input', function() {
-    loadParticipants(this.value);
+    const collegeFilter = document.getElementById('collegeFilter')?.value || '';
+    const typeFilter = document.getElementById('typeFilter')?.value || '';
+    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
+    loadParticipants(this.value, collegeFilter, typeFilter, sortBy);
+});
+
+// Filter functionality for participants page
+document.getElementById('collegeFilter')?.addEventListener('change', function() {
+    const searchTerm = document.getElementById('searchInput')?.value || '';
+    const typeFilter = document.getElementById('typeFilter')?.value || '';
+    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
+    loadParticipants(searchTerm, this.value, typeFilter, sortBy);
+});
+
+document.getElementById('typeFilter')?.addEventListener('change', function() {
+    const searchTerm = document.getElementById('searchInput')?.value || '';
+    const collegeFilter = document.getElementById('collegeFilter')?.value || '';
+    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
+    loadParticipants(searchTerm, collegeFilter, this.value, sortBy);
+});
+
+// Sorting functionality for participants page
+document.getElementById('sortBy')?.addEventListener('change', function() {
+    const searchTerm = document.getElementById('searchInput')?.value || '';
+    const collegeFilter = document.getElementById('collegeFilter')?.value || '';
+    const typeFilter = document.getElementById('typeFilter')?.value || '';
+    loadParticipants(searchTerm, collegeFilter, typeFilter, this.value);
+});
+
+document.getElementById('sortOrderBtn')?.addEventListener('click', function() {
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    this.textContent = sortOrder === 'asc' ? 'Ascending' : 'Descending';
+    const searchTerm = document.getElementById('searchInput')?.value || '';
+    const collegeFilter = document.getElementById('collegeFilter')?.value || '';
+    const typeFilter = document.getElementById('typeFilter')?.value || '';
+    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
+    loadParticipants(searchTerm, collegeFilter, typeFilter, sortBy);
 });
 
 // Load participants on page load for participants.html
 if (window.location.pathname.includes('participants.html')) {
     loadParticipants();
+
+    // Add click event listeners to sortable table headers
+    document.querySelectorAll('.sortable').forEach(header => {
+        header.addEventListener('click', function() {
+            const sortBy = this.dataset.sort;
+            const currentSortBy = document.getElementById('sortBy').value;
+
+            if (currentSortBy === sortBy) {
+                // Toggle sort order if same column clicked
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                // Set new sort column and default to ascending
+                document.getElementById('sortBy').value = sortBy;
+                sortOrder = 'asc';
+            }
+
+            document.getElementById('sortOrderBtn').textContent = sortOrder === 'asc' ? 'Ascending' : 'Descending';
+
+            const searchTerm = document.getElementById('searchInput')?.value || '';
+            const collegeFilter = document.getElementById('collegeFilter')?.value || '';
+            const typeFilter = document.getElementById('typeFilter')?.value || '';
+            loadParticipants(searchTerm, collegeFilter, typeFilter, sortBy);
+        });
+    });
 }
 
 // Add loading state to form submission
