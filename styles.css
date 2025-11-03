@@ -119,35 +119,30 @@ nav {
 }
 
 nav a {
-    color: white;
+    color: var(--primary-color);
     margin: 0 1.5rem;
     text-decoration: none;
     font-weight: 500;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     border-radius: var(--border-radius);
     transition: var(--transition);
-    position: relative;
+    background: white;
+    border: 1px solid var(--primary-color);
+    box-shadow: var(--shadow);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 nav a:hover {
-    background-color: rgba(255,255,255,0.2);
+    background: var(--primary-color);
+    color: white;
     transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    transition: var(--transition);
-    transform: translateX(-50%);
-}
-
-nav a:hover::after {
-    width: 100%;
+nav a i {
+    font-size: 1rem;
 }
 
 main {
