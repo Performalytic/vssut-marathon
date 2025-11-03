@@ -24,6 +24,94 @@ body {
     line-height: 1.6;
 }
 
+.home-page header {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.8) 0%, rgba(40, 167, 69, 0.8) 100%), url('images/cover-phot-vssut-campus.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.home-page header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
+    pointer-events: none;
+}
+
+.home-page .header-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex: 1;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.button-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cover-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.cover-button:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.home-page .logo {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.home-page .logo img {
+    height: 50px;
+    width: auto;
+    transition: var(--transition);
+}
+
+.home-page .logo img:hover {
+    transform: scale(1.05);
+}
+
 header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
@@ -646,6 +734,30 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .home-page header {
+        min-height: 350px;
+        padding: 1.5rem 1rem;
+    }
+
+    .home-page .logo img {
+        height: 40px;
+    }
+
+    .button-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .cover-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    header {
+        min-height: 250px;
+        padding: 1.5rem 1rem;
+    }
+
     header h1 {
         font-size: 2rem;
     }
@@ -680,6 +792,7 @@ footer {
 
 @media (max-width: 480px) {
     header {
+        min-height: 200px;
         padding: 1rem;
     }
 
