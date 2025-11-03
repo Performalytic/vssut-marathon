@@ -97,8 +97,7 @@ let allParticipants = [];
 let sortOrder = 'asc';
 
 // Function to load participants with search, filter, and sorting functionality
-async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter = '') {
-    const sortBy = 'firstName'; // Default sort by first name
+async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter = '', sortBy = 'firstName') {
     try {
         const response = await fetch('https://performalytic.github.io/vssut-marathon/participants.json');
         if (!response.ok) {
