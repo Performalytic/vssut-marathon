@@ -95,7 +95,7 @@ document.getElementById('registrationForm')?.addEventListener('submit', function
 // Function to load participants with search functionality
 async function loadParticipants(searchTerm = '') {
     try {
-        const response = await fetch('https://manga.github.io/vssut-marathon/participants.json');
+        const response = await fetch('https://performalytic.github.io/vssut-marathon/participants.json');
         if (!response.ok) {
             throw new Error('Failed to load participants data');
         }
