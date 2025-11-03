@@ -95,9 +95,11 @@ document.getElementById('registrationForm')?.addEventListener('submit', function
 // Global variables for filters and sorting
 let allParticipants = [];
 let sortOrder = 'asc';
+let currentPage = 1;
+let perPage = 10; // Items per page
 
 // Function to load participants with search, filter, and sorting functionality
-async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter = '', sortBy = 'firstName') {
+async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter = '', sortBy = 'firstName', page = 1) {
     try {
         const response = await fetch('https://performalytic.github.io/vssut-marathon/participants.json');
         if (!response.ok) {
@@ -107,9 +109,6 @@ async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter 
 
         // Populate college filter options
         populateCollegeFilter(allParticipants);
-
-        const tbody = document.querySelector('#participantsTable tbody');
-        tbody.innerHTML = '';
 
         let filteredParticipants = allParticipants.filter(participant => {
             const matchesSearch = !searchTerm ||
@@ -138,24 +137,36 @@ async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter 
             }
         });
 
-        if (filteredParticipants.length === 0) {
+        // Pagination
+        const totalPages = Math.ceil(filteredParticipants.length / perPage);
+        currentPage = Math.min(page, totalPages) || 1;
+        const startIndex = (currentPage - 1) * perPage;
+        const endIndex = startIndex + perPage;
+        const paginatedParticipants = filteredParticipants.slice(startIndex, endIndex);
+
+        const tbody = document.querySelector('#participantsTable tbody');
+        tbody.innerHTML = '';
+
+        if (paginatedParticipants.length === 0) {
             const row = document.createElement('tr');
             row.innerHTML = `<td colspan="5" style="text-align: center; padding: 2rem; color: var(--light-text);">No participants found${searchTerm ? ` matching "${searchTerm}"` : ''}.</td>`;
             tbody.appendChild(row);
-            return;
+        } else {
+            paginatedParticipants.forEach(participant => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${participant.firstName}</td>
+                    <td>${participant.lastName}</td>
+                    <td>${participant.college}</td>
+                    <td>${participant.gradYear}</td>
+                    <td>${participant.type}</td>
+                `;
+                tbody.appendChild(row);
+            });
         }
 
-        filteredParticipants.forEach(participant => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${participant.firstName}</td>
-                <td>${participant.lastName}</td>
-                <td>${participant.college}</td>
-                <td>${participant.gradYear}</td>
-                <td>${participant.type}</td>
-            `;
-            tbody.appendChild(row);
-        });
+        // Render pagination controls
+        renderPagination(totalPages, searchTerm, collegeFilter, typeFilter, sortBy);
     } catch (error) {
         console.error('Error loading participants:', error);
         const tbody = document.querySelector('#participantsTable tbody');
@@ -177,6 +188,57 @@ function populateCollegeFilter(participants) {
     });
 }
 
+// Function to render pagination controls
+function renderPagination(totalPages, searchTerm, collegeFilter, typeFilter, sortBy) {
+    const paginationContainer = document.getElementById('pagination');
+    if (!paginationContainer) return;
+
+    paginationContainer.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    // Previous button
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = 'Previous';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            loadParticipants(searchTerm, collegeFilter, typeFilter, sortBy, currentPage - 1);
+        }
+    });
+    paginationContainer.appendChild(prevBtn);
+
+    // Page numbers
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.textContent = i;
+        pageBtn.className = i === currentPage ? 'active' : '';
+        pageBtn.addEventListener('click', () => {
+            loadParticipants(searchTerm, collegeFilter, typeFilter, sortBy, i);
+        });
+        paginationContainer.appendChild(pageBtn);
+    }
+
+    // Next button
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Next';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            loadParticipants(searchTerm, collegeFilter, typeFilter, sortBy, currentPage + 1);
+        }
+    });
+    paginationContainer.appendChild(nextBtn);
+}
+
 // Function to show fee info based on college
 document.getElementById('college')?.addEventListener('change', function() {
     const feeInfo = document.getElementById('feeInfo');
@@ -191,6 +253,7 @@ document.getElementById('college')?.addEventListener('change', function() {
 
 // Search functionality for participants page
 document.getElementById('searchInput')?.addEventListener('input', function() {
+    currentPage = 1; // Reset to first page on search
     const collegeFilter = document.getElementById('collegeFilter')?.value || '';
     const typeFilter = document.getElementById('typeFilter')?.value || '';
     loadParticipants(this.value, collegeFilter, typeFilter);
@@ -198,12 +261,14 @@ document.getElementById('searchInput')?.addEventListener('input', function() {
 
 // Filter functionality for participants page
 document.getElementById('collegeFilter')?.addEventListener('change', function() {
+    currentPage = 1; // Reset to first page on filter
     const searchTerm = document.getElementById('searchInput')?.value || '';
     const typeFilter = document.getElementById('typeFilter')?.value || '';
     loadParticipants(searchTerm, this.value, typeFilter);
 });
 
 document.getElementById('typeFilter')?.addEventListener('change', function() {
+    currentPage = 1; // Reset to first page on filter
     const searchTerm = document.getElementById('searchInput')?.value || '';
     const collegeFilter = document.getElementById('collegeFilter')?.value || '';
     loadParticipants(searchTerm, collegeFilter, this.value);

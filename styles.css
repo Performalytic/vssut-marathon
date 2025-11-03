@@ -598,6 +598,11 @@ th {
     letter-spacing: 0.5px;
 }
 
+#participantsTable th {
+    background: #007BFF;
+    color: white;
+}
+
 .sortable {
     cursor: pointer;
     user-select: none;
@@ -821,4 +826,46 @@ footer {
     table {
         min-width: 600px;
     }
+}
+
+/* Pagination Container */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.pagination-container button {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e0e0e0;
+    background-color: white;
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    min-width: 40px;
+}
+
+.pagination-container button:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.pagination-container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-container button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    font-weight: 600;
 }
