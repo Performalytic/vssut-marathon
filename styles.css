@@ -114,7 +114,10 @@ body {
 }
 
 header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.8) 0%, rgba(40, 167, 69, 0.8) 100%), url('images/pc-bridge-spot-in-burla.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: white;
     padding: 2rem 1rem;
     box-shadow: var(--shadow);
