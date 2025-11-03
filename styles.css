@@ -27,8 +27,7 @@ body {
 header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    text-align: center;
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
@@ -45,18 +44,70 @@ header::before {
     opacity: 0.1;
 }
 
-header h1 {
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.logo {
+    flex-shrink: 0;
+}
+
+.logo img {
+    height: 60px;
+    width: auto;
+    transition: var(--transition);
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+}
+
+.title-section {
+    flex: 1;
+    text-align: center;
+    min-width: 200px;
+}
+
+.title-section h1 {
     margin: 0;
     font-size: 2.5rem;
     font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-header h2 {
+.title-section h2 {
     margin: 0.5rem 0;
     font-size: 1.5rem;
     font-weight: 300;
     opacity: 0.9;
+}
+
+.nav-link {
+    flex-shrink: 0;
+}
+
+.home-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.home-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 nav {
