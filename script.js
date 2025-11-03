@@ -97,7 +97,8 @@ let allParticipants = [];
 let sortOrder = 'asc';
 
 // Function to load participants with search, filter, and sorting functionality
-async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter = '', sortBy = 'firstName') {
+async function loadParticipants(searchTerm = '', collegeFilter = '', typeFilter = '') {
+    const sortBy = 'firstName'; // Default sort by first name
     try {
         const response = await fetch('https://performalytic.github.io/vssut-marathon/participants.json');
         if (!response.ok) {
@@ -193,41 +194,20 @@ document.getElementById('college')?.addEventListener('change', function() {
 document.getElementById('searchInput')?.addEventListener('input', function() {
     const collegeFilter = document.getElementById('collegeFilter')?.value || '';
     const typeFilter = document.getElementById('typeFilter')?.value || '';
-    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
-    loadParticipants(this.value, collegeFilter, typeFilter, sortBy);
+    loadParticipants(this.value, collegeFilter, typeFilter);
 });
 
 // Filter functionality for participants page
 document.getElementById('collegeFilter')?.addEventListener('change', function() {
     const searchTerm = document.getElementById('searchInput')?.value || '';
     const typeFilter = document.getElementById('typeFilter')?.value || '';
-    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
-    loadParticipants(searchTerm, this.value, typeFilter, sortBy);
+    loadParticipants(searchTerm, this.value, typeFilter);
 });
 
 document.getElementById('typeFilter')?.addEventListener('change', function() {
     const searchTerm = document.getElementById('searchInput')?.value || '';
     const collegeFilter = document.getElementById('collegeFilter')?.value || '';
-    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
-    loadParticipants(searchTerm, collegeFilter, this.value, sortBy);
-});
-
-// Sorting functionality for participants page
-document.getElementById('sortBy')?.addEventListener('change', function() {
-    const searchTerm = document.getElementById('searchInput')?.value || '';
-    const collegeFilter = document.getElementById('collegeFilter')?.value || '';
-    const typeFilter = document.getElementById('typeFilter')?.value || '';
-    loadParticipants(searchTerm, collegeFilter, typeFilter, this.value);
-});
-
-document.getElementById('sortOrderBtn')?.addEventListener('click', function() {
-    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    this.textContent = sortOrder === 'asc' ? 'Ascending' : 'Descending';
-    const searchTerm = document.getElementById('searchInput')?.value || '';
-    const collegeFilter = document.getElementById('collegeFilter')?.value || '';
-    const typeFilter = document.getElementById('typeFilter')?.value || '';
-    const sortBy = document.getElementById('sortBy')?.value || 'firstName';
-    loadParticipants(searchTerm, collegeFilter, typeFilter, sortBy);
+    loadParticipants(searchTerm, collegeFilter, this.value);
 });
 
 // Load participants on page load for participants.html
@@ -238,18 +218,9 @@ if (window.location.pathname.includes('participants.html')) {
     document.querySelectorAll('.sortable').forEach(header => {
         header.addEventListener('click', function() {
             const sortBy = this.dataset.sort;
-            const currentSortBy = document.getElementById('sortBy').value;
 
-            if (currentSortBy === sortBy) {
-                // Toggle sort order if same column clicked
-                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-            } else {
-                // Set new sort column and default to ascending
-                document.getElementById('sortBy').value = sortBy;
-                sortOrder = 'asc';
-            }
-
-            document.getElementById('sortOrderBtn').textContent = sortOrder === 'asc' ? 'Ascending' : 'Descending';
+            // Toggle sort order if same column clicked
+            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
 
             const searchTerm = document.getElementById('searchInput')?.value || '';
             const collegeFilter = document.getElementById('collegeFilter')?.value || '';
