@@ -93,36 +93,46 @@ document.getElementById('registrationForm')?.addEventListener('submit', function
 });
 
 // Function to load participants with search functionality
-function loadParticipants(searchTerm = '') {
-    const participants = JSON.parse(localStorage.getItem('participants')) || [];
-    const tbody = document.querySelector('#participantsTable tbody');
-    tbody.innerHTML = '';
+async function loadParticipants(searchTerm = '') {
+    try {
+        const response = await fetch('https://manga.github.io/vssut-marathon/participants.json');
+        if (!response.ok) {
+            throw new Error('Failed to load participants data');
+        }
+        const participants = await response.json();
+        const tbody = document.querySelector('#participantsTable tbody');
+        tbody.innerHTML = '';
 
-    const filteredParticipants = participants.filter(participant =>
-        !searchTerm ||
-        participant.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        participant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        participant.college.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+        const filteredParticipants = participants.filter(participant =>
+            !searchTerm ||
+            participant.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            participant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            participant.college.toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
-    if (filteredParticipants.length === 0) {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td colspan="5" style="text-align: center; padding: 2rem; color: var(--light-text);">No participants found${searchTerm ? ` matching "${searchTerm}"` : ''}.</td>`;
-        tbody.appendChild(row);
-        return;
+        if (filteredParticipants.length === 0) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td colspan="5" style="text-align: center; padding: 2rem; color: var(--light-text);">No participants found${searchTerm ? ` matching "${searchTerm}"` : ''}.</td>`;
+            tbody.appendChild(row);
+            return;
+        }
+
+        filteredParticipants.forEach(participant => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${participant.firstName}</td>
+                <td>${participant.lastName}</td>
+                <td>${participant.college}</td>
+                <td>${participant.gradYear}</td>
+                <td>${participant.type}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading participants:', error);
+        const tbody = document.querySelector('#participantsTable tbody');
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: red;">Error loading participants data.</td></tr>';
     }
-
-    filteredParticipants.forEach(participant => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${participant.firstName}</td>
-            <td>${participant.lastName}</td>
-            <td>${participant.college}</td>
-            <td>${participant.gradYear}</td>
-            <td>${participant.type}</td>
-        `;
-        tbody.appendChild(row);
-    });
 }
 
 // Function to show fee info based on college

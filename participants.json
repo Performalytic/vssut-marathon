@@ -1,0 +1,23 @@
+[
+    {
+        "firstName": "John",
+        "lastName": "Doe",
+        "college": "VSSUT",
+        "gradYear": "2025",
+        "type": "Student"
+    },
+    {
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "college": "Other College",
+        "gradYear": "2024",
+        "type": "Student"
+    },
+    {
+        "firstName": "Alice",
+        "lastName": "Johnson",
+        "college": "VSSUT",
+        "gradYear": "2023",
+        "type": "Staff"
+    }
+]
