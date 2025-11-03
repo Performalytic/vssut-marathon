@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participants - VSSUT Marathon</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Registered Participants</h1>
+        <a href="index.html">Home</a>
+    </header>
+    <main>
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Participants" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius); box-shadow: var(--shadow);" />
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search participants by name or college...">
+        </div>
+        <div class="table-container">
+            <table id="participantsTable">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>College</th>
+                        <th>Year of Graduation</th>
+                        <th>Student or Staff</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Participants will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

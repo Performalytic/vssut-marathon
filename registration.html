@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration - VSSUT Marathon</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>VSSUT Marathon Registration</h1>
+        <a href="index.html">Home</a>
+    </header>
+    <main>
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Registration" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius); box-shadow: var(--shadow);" />
+        </div>
+        <form id="registrationForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Postal Address:</label>
+                <textarea id="address" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tshirtSize">T-Shirt Size:</label>
+                    <select id="tshirtSize" required>
+                        <option value="">Select Size</option>
+                        <option value="S-Men">S (Men)</option>
+                        <option value="M-Men">M (Men)</option>
+                        <option value="L-Men">L (Men)</option>
+                        <option value="XL-Men">XL (Men)</option>
+                        <option value="XXL-Men">XXL (Men)</option>
+                        <option value="S-Women">S (Women)</option>
+                        <option value="M-Women">M (Women)</option>
+                        <option value="L-Women">L (Women)</option>
+                        <option value="XL-Women">XL (Women)</option>
+                        <option value="XXL-Women">XXL (Women)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" required>
+                        <option value="">Select Category</option>
+                        <option value="5KM">5KM</option>
+                        <option value="10KM">10KM</option>
+                        <option value="Half Marathon">Half Marathon</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="college">College Name:</label>
+                <select id="college" required>
+                    <option value="">Select College</option>
+                    <option value="VSSUT">VSSUT</option>
+                    <option value="VSS Medical">VSS Medical</option>
+                    <option value="Jyotivihar">Jyotivihar</option>
+                    <option value="GM College">GM College</option>
+                    <option value="IIM">IIM</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Student or Staff:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="student" name="type" value="Student" required>
+                        <label for="student">Student</label>
+                        <input type="radio" id="staff" name="type" value="Staff" required>
+                        <label for="staff">Staff</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="gradYear">Graduation Year:</label>
+                    <select id="gradYear" required>
+                        <option value="">Select Year</option>
+                        <!-- Years from 1960 to 2035 -->
+                        <script>
+                            for (let year = 1960; year <= 2035; year++) {
+                                document.write(`<option value="${year}">${year}</option>`);
+                            }
+                        </script>
+                    </select>
+                </div>
+            </div>
+
+            <div id="feeInfo"></div>
+
+            <button type="submit">Register for Marathon</button>
+        </form>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
